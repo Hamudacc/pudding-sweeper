@@ -132,7 +132,7 @@
 
   <div id="panel" style="display: none;">
     <div class="info-box">
-      <span class="info-label">💣 남은 푸딩</span>
+      <span class="info-label">🍮 남은 푸딩</span>
       <span class="info-value" id="mine-count">10</span>
     </div>
     
@@ -337,7 +337,7 @@ function render(){
     el.className='cell'+(wasJ?' jiggle':'');el.textContent='';
     if(revealed[r][c]){
       const v=board[r][c];
-      if(v===-1){el.classList.add('mine-hit');el.textContent='💣';}
+      if(v===-1){el.classList.add('mine-hit');el.textContent='🍮';}
       else{el.classList.add('revealed');if(v>0){el.textContent=v;el.classList.add('n'+v);}}
     } else if(flagged[r][c]){
       el.classList.add('flagged');el.textContent='🚩';
