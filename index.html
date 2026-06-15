@@ -19,14 +19,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 8px;
+  padding: 10px;
   width: 100%;
-  
-  /* 세로 제한 추가 */
-  min-height: 100vh;      /* 최소한 화면 높이만큼은 차지 */
-  max-height: 100vh;      /* 최대 높이를 화면 높이로 제한 */
-  overflow-y: auto;       /* 화면이 작으면 여기서 스크롤이 생김 */
-  box-sizing: border-box;
+  height: 100vh; /* 화면 높이를 100%로 고정 */
+  justify-content: center; /* 세로 중앙 정렬 */
+  overflow: hidden; /* 스크롤 방지 */
 }
 
 #panel{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:430px;background:#fff8e1;border:2px solid #e6a800;border-radius:20px;padding:8px 20px;margin-bottom:10px;box-shadow:0 4px 0 #b87800,inset 0 1px 0 rgba(255,255,255,0.9)}
@@ -53,11 +50,12 @@
   padding: 12px;
   display: inline-block;
   box-shadow: 0 6px 0 #b07818, inset 0 2px 6px rgba(255,255,200,0.8);
-  width: 100%;
-  max-width: 440px; /* 여기서 너비를 제한하므로 PC에서 너무 커지지 않음 */
+  width: 90%;
+  max-width: 440px;
+  /* 핵심: 게임판의 최대 높이를 제한하여 조작법이 짤리지 않게 함 */
+  max-height: 55vh; 
   box-sizing: border-box;
 }
-
 #board {
 
   display: grid;
@@ -108,32 +106,13 @@
 
 
 
-/* 📝 하단 조작법 안내 상자 스타일 */
-
+/* 조작법 안내 상자도 조금 더 컴팩트하게 조절 */
 .guide-box {
-
-  margin-top: 18px;
-
-  margin-left: auto;
-
-  margin-right: auto;
-
-  width: 100%;
-
+  margin-top: 10px;
+  width: 90%;
   max-width: 440px;
-
-  background: #fffdf6;
-
-  border: 2px dashed #f0ab00;
-
-  border-radius: 16px;
-
-  padding: 14px 16px;
-
-  box-shadow: 0 2px 4px rgba(184, 120, 0, 0.1);
-
-  box-sizing: border-box;
-
+  padding: 10px;
+  font-size: 12px;
 }
 
 .guide-title {  font-size: 13px;  font-weight: 700;  color: #8a5e10;  margin-bottom: 10px;  text-align: center;}
