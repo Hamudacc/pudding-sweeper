@@ -157,11 +157,24 @@
 
 <div id="app">
   <h2 class="sr-only">커스터드 푸딩 지뢰찾기</h2>
-  <div id="panel">
-    <div class="info-box">
-      <span class="info-label">💣 남은 지뢰</span>
-      <span class="info-value" id="mine-count">20</span>
+
+  <div id="start-screen">
+    <div class="start-logo">
+      <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg" style="width: 120px; height: 135px;">
+        </svg>
+      <h1 class="game-title">커스터드 푸딩 지뢰찾기</h1>
     </div>
+    
+    <button id="start-btn">🍮 게임 시작하기</button>
+  </div>
+
+  <div id="panel" style="display: none;"> </div>
+
+  <div id="board-wrap" style="display: none;"> </div>
+
+  <div class="guide-box">
+    </div>
+</div>
 
     <button id="reset-btn" aria-label="다시 시작">
       <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
