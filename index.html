@@ -1,238 +1,304 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>미니 푸딩 지뢰찾기 🍮</title>
-    <style>
-        body {
-            font-family: 'Malgun Gothic', sans-serif;
-            background-color: #fffde7;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .game-container {
-            background-color: #fff8e1;
-            border: 4px solid #5d4037;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 8px 24px rgba(93, 64, 55, 0.2);
-            text-align: center;
-        }
-        h1 {
-            color: #5d4037;
-            margin: 0 0 10px 0;
-            font-size: 20px;
-        }
-        #status-panel {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #f57c00;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        #reset-btn {
-            background: #fff;
-            border: 2px solid #5d4037;
-            font-size: 18px;
-            padding: 2px 6px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        #board {
-            display: grid;
-            grid-template-columns: repeat(10, 32px);
-            grid-template-rows: repeat(10, 32px);
-            gap: 2px;
-            background-color: #bcaaa4;
-            padding: 4px;
-            border-radius: 6px;
-        }
-        .cell {
-            width: 32px;
-            height: 32px;
-            background-color: #ffe082;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            user-select: none;
-            box-shadow: inset 0 -3px 0 #ffd54f;
-        }
-        .cell.revealed {
-            background-color: #fff9c4;
-            box-shadow: none;
-            border: 1px solid #e0dcb5;
-        }
-        .cell.mine {
-            background-color: #ff8a80;
-        }
-        .n-1 { color: #1e88e5; }
-        .n-2 { color: #43a047; }
-        .n-3 { color: #e53935; }
-        .n-4 { color: #3949ab; }
-    </style>
-</head>
-<body>
 
-<div class="game-container">
-    <h1>🍮 미니 푸딩 지뢰찾기 (10x10)</h1>
-    <div id="status-panel">
-        <div>🍮 푸딩: <span id="mine-count">10</span></div>
-        <button id="reset-btn" onclick="initGame()">😊</button>
-        <div>⏳ <span id="timer">0</span>초</div>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+#app{display:flex;flex-direction:column;align-items:center;padding:12px 8px}
+#panel{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:430px;background:#fff8e1;border:2px solid #e6a800;border-radius:20px;padding:8px 20px;margin-bottom:10px;box-shadow:0 4px 0 #b87800,inset 0 1px 0 rgba(255,255,255,0.9)}
+.info-label{font-size:11px;color:#8a5e10;letter-spacing:0.04em;font-weight:600}
+.info-value{font-size:22px;font-weight:700;color:#6b3e08;font-variant-numeric:tabular-nums;min-width:44px;text-align:center}
+.info-box{display:flex;flex-direction:column;align-items:center;gap:1px}
+#reset-btn{width:72px;height:72px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.15s;flex-shrink:0;background:transparent;padding:0}
+#reset-btn:hover{transform:scale(1.12) rotate(-4deg)}
+#reset-btn:active{transform:scale(0.9)}
+#reset-btn svg{width:72px;height:72px;display:block;overflow:visible}
+#board-wrap{position:relative;background:linear-gradient(160deg,#fff3c0,#ffe680);border:2.5px solid #d4a030;border-radius:24px;padding:12px;display:inline-block;box-shadow:0 6px 0 #b07818,inset 0 2px 6px rgba(255,255,200,0.8)}
+#board{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.cell{width:38px;height:38px;border-radius:12px;border:none;cursor:pointer;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;user-select:none;position:relative;overflow:hidden;transition:transform 0.12s,box-shadow 0.12s;flex-shrink:0}
+.cell.hidden{background:#f0a800;box-shadow:0 5px 0 #a06800,0 6px 8px rgba(120,70,0,0.3),inset 0 1px 0 rgba(255,220,80,0.9),inset 0 -2px 4px rgba(140,80,0,0.4)}
+.cell.hidden::before{content:'';position:absolute;top:3px;left:6px;right:6px;height:40%;background:linear-gradient(180deg,rgba(255,255,255,0.6) 0%,rgba(255,255,255,0) 100%);border-radius:50% 50% 50% 50% / 80% 80% 20% 20%;pointer-events:none}
+.cell.hidden::after{content:'';position:absolute;top:4px;left:8px;width:7px;height:5px;background:rgba(255,255,255,0.75);border-radius:50%;pointer-events:none}
+.cell.hidden:hover{transform:scale(1.14) translateY(-3px);background:#ffb800;box-shadow:0 8px 0 #a06800,inset 0 1px 0 rgba(255,230,100,0.95),inset 0 -2px 4px rgba(140,80,0,0.4)}
+.cell.hidden:active{transform:scale(0.91) translateY(3px);box-shadow:0 1px 0 #a06800,inset 0 2px 6px rgba(140,80,0,0.5)}
+.cell.flagged{background:#f0a800;box-shadow:0 5px 0 #a06800,inset 0 1px 0 rgba(255,220,80,0.9),inset 0 -2px 4px rgba(140,80,0,0.4);font-size:17px}
+.cell.flagged::before{content:'';position:absolute;top:3px;left:6px;right:6px;height:40%;background:linear-gradient(180deg,rgba(255,255,255,0.55) 0%,rgba(255,255,255,0) 100%);border-radius:50% 50% 50% 50% / 80% 80% 20% 20%;pointer-events:none}
+.cell.flagged::after{content:'';position:absolute;top:4px;left:8px;width:7px;height:5px;background:rgba(255,255,255,0.7);border-radius:50%;pointer-events:none}
+.cell.flagged:hover{transform:scale(1.1)}
+.cell.revealed{background:rgba(255,235,130,0.38);box-shadow:inset 0 2px 5px rgba(160,100,0,0.22);cursor:default;border-radius:9px}
+.cell.mine-hit{background:linear-gradient(145deg,#ff8844,#ff4400);box-shadow:0 4px 0 #cc2200,inset 0 1px 0 rgba(255,180,100,0.8);font-size:18px}
+.cell.mine-shown{background:rgba(255,235,130,0.38);font-size:17px;border-radius:9px;box-shadow:inset 0 2px 5px rgba(160,100,0,0.22)}
+.cell.wrong-flag{background:linear-gradient(145deg,#ff9980,#ff5533);box-shadow:0 3px 0 #cc3300;font-size:17px}
+.n1{color:#1a4db3}.n2{color:#1a7a38}.n3{color:#b01a1a}.n4{color:#3a1a99}.n5{color:#993300}.n6{color:#006688}.n7{color:#443300}.n8{color:#223344}
+#overlay{position:absolute;inset:0;border-radius:22px;display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;z-index:50;overflow:hidden}
+#overlay.show{display:flex}
+#overlay-bg{position:absolute;inset:0;background:rgba(60,30,0,0.6);backdrop-filter:blur(3px)}
+#overlay-box{position:relative;z-index:2;background:#fff8e1;border:2.5px solid #e6a800;border-radius:22px;padding:22px 36px;text-align:center;box-shadow:0 6px 0 #b07818,inset 0 1px 0 rgba(255,255,200,0.9)}
+#overlay-title{font-size:26px;font-weight:700;color:#7a4400;display:block;margin-bottom:6px}
+#overlay-sub{font-size:13px;color:#a06020;display:block}
+#pudding-canvas{position:absolute;inset:0;pointer-events:none;z-index:40;border-radius:22px}
+.cell.jiggle{animation:jiggle 0.4s cubic-bezier(.36,.07,.19,.97)}
+@keyframes jiggle{0%{transform:scale(1)}15%{transform:scale(1.22,0.78)}30%{transform:scale(0.88,1.18)}45%{transform:scale(1.12,0.9)}60%{transform:scale(0.95,1.06)}75%{transform:scale(1.04,0.97)}100%{transform:scale(1)}}
+.cell.pop{animation:pop 0.22s ease forwards}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(0) rotate(25deg);opacity:0}}
+.face{display:none}.face.active{display:block}
+</style>
+
+<div id="app">
+  <h2 class="sr-only">커스터드 푸딩 지뢰찾기</h2>
+  <div id="panel">
+    <div class="info-box">
+      <span class="info-label">💣 남은 지뢰</span>
+      <span class="info-value" id="mine-count">20</span>
     </div>
+
+    <button id="reset-btn" aria-label="다시 시작">
+      <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bodyGrad" cx="38%" cy="32%" r="62%">
+            <stop offset="0%" stop-color="#ffe87a"/>
+            <stop offset="55%" stop-color="#f5c020"/>
+            <stop offset="100%" stop-color="#d49000"/>
+          </radialGradient>
+          <radialGradient id="caramelGrad" cx="50%" cy="30%" r="60%">
+            <stop offset="0%" stop-color="#d48820"/>
+            <stop offset="100%" stop-color="#8a4400"/>
+          </radialGradient>
+          <radialGradient id="plateGrad" cx="50%" cy="30%" r="60%">
+            <stop offset="0%" stop-color="#fff3cc"/>
+            <stop offset="100%" stop-color="#e8d090"/>
+          </radialGradient>
+          <filter id="soft"><feGaussianBlur stdDeviation="0.4"/></filter>
+        </defs>
+
+        <!-- 접시 -->
+        <ellipse cx="40" cy="82" rx="30" ry="6" fill="url(#plateGrad)" stroke="#d4aa40" stroke-width="1"/>
+        <ellipse cx="40" cy="80" rx="28" ry="4.5" fill="#fff8e0"/>
+
+        <!-- 몸통 아랫부분 (넓은 돔) -->
+        <path d="M 12 68 Q 10 50 40 46 Q 70 50 68 68 Q 60 78 40 79 Q 20 78 12 68 Z" fill="url(#bodyGrad)"/>
+
+        <!-- 몸통 윗부분 (좁아지는 허리) -->
+        <path d="M 22 47 Q 20 30 40 26 Q 60 30 58 47 Q 50 44 40 44 Q 30 44 22 47 Z" fill="url(#bodyGrad)"/>
+
+        <!-- 캐러멜 층 (허리 부분) -->
+        <ellipse cx="40" cy="46" rx="18" ry="5" fill="url(#caramelGrad)"/>
+        <!-- 캐러멜 흘러내림 -->
+        <path d="M 28 49 Q 26 56 27 61" stroke="#a05800" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <ellipse cx="27" cy="62" rx="3.5" ry="4" fill="#a05800"/>
+        <path d="M 52 49 Q 54 57 53 63" stroke="#a05800" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="53" cy="64" rx="3" ry="3.5" fill="#a05800"/>
+        <path d="M 38 50 Q 37 55 38 58" stroke="#b06010" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="38" cy="59" rx="2.2" ry="2.5" fill="#b06010"/>
+
+        <!-- 캐러멜 위 둥근 머리 -->
+        <ellipse cx="40" cy="28" rx="16" ry="14" fill="url(#bodyGrad)"/>
+
+        <!-- 전체 광택 -->
+        <ellipse cx="33" cy="20" rx="7" ry="5" fill="rgba(255,255,255,0.38)" transform="rotate(-20 33 20)"/>
+        <ellipse cx="31" cy="18" rx="3" ry="2" fill="rgba(255,255,255,0.65)" transform="rotate(-20 31 18)"/>
+        <ellipse cx="33" cy="58" rx="9" ry="6" fill="rgba(255,255,255,0.18)" transform="rotate(-10 33 58)"/>
+
+        <!-- 보통 표정 -->
+        <g class="face active" id="face-normal">
+          <circle cx="35" cy="27" r="2.2" fill="#7a3c00"/>
+          <circle cx="45" cy="27" r="2.2" fill="#7a3c00"/>
+          <path d="M 34 33 Q 40 37 46 33" stroke="#7a3c00" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- 기쁜 표정 -->
+        <g class="face" id="face-happy">
+          <circle cx="35" cy="27" r="2.2" fill="#7a3c00"/>
+          <circle cx="45" cy="27" r="2.2" fill="#7a3c00"/>
+          <path d="M 33 32 Q 40 39 47 32" stroke="#7a3c00" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M 32 24 Q 35 21 38 24" stroke="#7a3c00" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M 42 24 Q 45 21 48 24" stroke="#7a3c00" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- 죽은 표정 -->
+        <g class="face" id="face-dead">
+          <line x1="32" y1="24" x2="37" y2="29" stroke="#7a3c00" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="37" y1="24" x2="32" y2="29" stroke="#7a3c00" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="43" y1="24" x2="48" y2="29" stroke="#7a3c00" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="48" y1="24" x2="43" y2="29" stroke="#7a3c00" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M 34 36 Q 40 31 46 36" stroke="#7a3c00" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </button>
+
+    <div class="info-box">
+      <span class="info-label">⏱ 시간</span>
+      <span class="info-value" id="timer">0</span>
+    </div>
+  </div>
+
+  <div id="board-wrap">
     <div id="board"></div>
+    <canvas id="pudding-canvas"></canvas>
+    <div id="overlay">
+      <div id="overlay-bg"></div>
+      <div id="overlay-box">
+        <span id="overlay-title"></span>
+        <span id="overlay-sub"></span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-    const SIZE = 10;
-    const MINES = 10;
-    let board = [];
-    let firstClick = true;
-    let gameOver = false;
-    let timerInterval = null;
-    let time = 0;
-    let flags = 0;
+const ROWS=10,COLS=10,MINES=20;
+let board=[],revealed=[],flagged=[],gameState='idle',timerInterval=null,seconds=0,firstClick=true;
+let pudParticles=[],rafId=null;
+const canvas=document.getElementById('pudding-canvas');
+const ctx=canvas.getContext('2d');
 
-    const boardEl = document.getElementById('board');
-    const mineCountEl = document.getElementById('mine-count');
-    const timerEl = document.getElementById('timer');
-    const resetBtn = document.getElementById('reset-btn');
+function resizeCanvas(){const w=document.getElementById('board-wrap');canvas.width=w.offsetWidth;canvas.height=w.offsetHeight;}
 
-    function initGame() {
-        boardEl.innerHTML = '';
-        board = [];
-        firstClick = true;
-        gameOver = false;
-        time = 0;
-        flags = 0;
-        resetBtn.textContent = '😊';
-        mineCountEl.textContent = MINES;
-        timerEl.textContent = 0;
-        clearInterval(timerInterval);
+function setFace(name){
+  document.querySelectorAll('.face').forEach(f=>f.classList.remove('active'));
+  const el=document.getElementById('face-'+name);
+  if(el)el.classList.add('active');
+}
 
-        for (let r = 0; r < SIZE; r++) {
-            board[r] = [];
-            for (let c = 0; c < SIZE; c++) {
-                const el = document.createElement('div');
-                el.classList.add('cell');
-                el.addEventListener('click', () => handleLeftClick(r, c));
-                el.addEventListener('contextmenu', (e) => { e.preventDefault(); handleRightClick(r, c); });
-                boardEl.appendChild(el);
-                board[r][c] = { isMine: false, isRevealed: false, isFlagged: false, count: 0, el: el };
-            }
-        }
+function initBoard(){
+  board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
+  revealed=Array.from({length:ROWS},()=>Array(COLS).fill(false));
+  flagged=Array.from({length:ROWS},()=>Array(COLS).fill(false));
+  gameState='idle';firstClick=true;
+  clearInterval(timerInterval);seconds=0;
+  document.getElementById('timer').textContent='0';
+  document.getElementById('mine-count').textContent=MINES;
+  setFace('normal');
+  document.getElementById('overlay').classList.remove('show');
+  pudParticles=[];cancelAnimationFrame(rafId);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  render();setTimeout(resizeCanvas,50);
+}
+
+function placeMines(safeR,safeC){
+  const safe=new Set();
+  for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=safeR+dr,nc=safeC+dc;if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS)safe.add(nr*COLS+nc);}
+  let placed=0;
+  while(placed<MINES){const idx=Math.floor(Math.random()*ROWS*COLS),r=Math.floor(idx/COLS),c=idx%COLS;if(!safe.has(idx)&&board[r][c]!==-1){board[r][c]=-1;placed++;}}
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    if(board[r][c]===-1)continue;let cnt=0;
+    for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&board[nr][nc]===-1)cnt++;}
+    board[r][c]=cnt;
+  }
+}
+
+function startTimer(){timerInterval=setInterval(()=>{seconds++;document.getElementById('timer').textContent=seconds;},1000);}
+function countFlags(){let f=0;for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(flagged[r][c])f++;return f;}
+function updateMineCount(){document.getElementById('mine-count').textContent=MINES-countFlags();}
+function getCellEl(r,c){return document.querySelector(`[data-r="${r}"][data-c="${c}"]`);}
+
+function reveal(r,c){
+  if(r<0||r>=ROWS||c<0||c>=COLS||revealed[r][c]||flagged[r][c])return;
+  revealed[r][c]=true;
+  const el=getCellEl(r,c);if(el){el.classList.remove('jiggle');void el.offsetWidth;el.classList.add('jiggle');}
+  if(board[r][c]===0)for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++)reveal(r+dr,c+dc);
+}
+
+function checkWin(){for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(board[r][c]!==-1&&!revealed[r][c])return false;return true;}
+
+function spawnExplosion(hitR,hitC){
+  resizeCanvas();
+  const pad=12,cw=38,gap=4;
+  const cx=pad+(hitC*(cw+gap))+cw/2,cy=pad+(hitR*(cw+gap))+cw/2;
+  const custard=['#ffe566','#ffd030','#f5bc18','#ffe8a0','#fff3cc'];
+  const caramel=['#c87010','#9a5005','#e09820','#d08010','#7a3800'];
+  const cream=['#fffbea','#fff6c8','#fef0a0'];
+  for(let i=0;i<160;i++){
+    const angle=Math.random()*Math.PI*2,speed=1+Math.random()*10,size=3+Math.random()*16;
+    const t=Math.random();
+    const color=t<0.4?custard[Math.floor(Math.random()*custard.length)]:t<0.72?caramel[Math.floor(Math.random()*caramel.length)]:cream[Math.floor(Math.random()*cream.length)];
+    const isSplat=Math.random()<0.38,isDrip=Math.random()<0.22;
+    pudParticles.push({x:cx,y:cy,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-Math.random()*5,size,color,alpha:1,gravity:0.2+Math.random()*0.28,wobble:Math.random()*Math.PI*2,wobbleSpeed:0.07+Math.random()*0.2,sx:0.55+Math.random()*0.8,sy:0.55+Math.random()*0.8,isSplat,isDrip,life:0,maxLife:50+Math.random()*55,rot:Math.random()*Math.PI*2,rotS:(Math.random()-0.5)*0.2,dripLen:isDrip?8+Math.random()*22:0});
+  }
+  animatePudding();
+}
+
+function animatePudding(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pudParticles=pudParticles.filter(p=>p.alpha>0.02&&p.life<p.maxLife);
+  for(const p of pudParticles){
+    p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.vx*=0.97;p.wobble+=p.wobbleSpeed;
+    p.life++;p.alpha=1-(p.life/p.maxLife);p.rot+=p.rotS;
+    ctx.save();ctx.globalAlpha=p.alpha;
+    if(p.isDrip){
+      ctx.translate(p.x,p.y);ctx.fillStyle=p.color;
+      ctx.beginPath();ctx.ellipse(0,0,p.size*0.5,p.size*0.75,0,0,Math.PI*2);ctx.fill();
+      const dy=p.size*0.6+p.dripLen*(p.life/p.maxLife)*1.2;
+      ctx.beginPath();ctx.moveTo(-p.size*0.38,p.size*0.55);ctx.quadraticCurveTo(0,dy,p.size*0.38,p.size*0.55);ctx.fill();
+    } else {
+      ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      const wob=Math.sin(p.wobble)*0.28,r=p.size*(1-(p.life/p.maxLife)*0.28);
+      if(p.isSplat){ctx.scale(p.sx+wob,p.sy-wob*0.5);ctx.beginPath();drawBlob(ctx,0,0,r,6);}
+      else{ctx.scale(1+wob*0.25,1-wob*0.18);ctx.beginPath();ctx.ellipse(0,0,r,r,0,0,Math.PI*2);}
+      ctx.fillStyle=p.color;ctx.fill();
+      ctx.beginPath();ctx.ellipse(-r*0.25,-r*0.28,r*0.28,r*0.18,-0.6,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.55)';ctx.fill();
     }
+    ctx.restore();
+  }
+  if(pudParticles.length>0)rafId=requestAnimationFrame(animatePudding);
+  else ctx.clearRect(0,0,canvas.width,canvas.height);
+}
 
-    function generateMines(startR, startC) {
-        let placed = 0;
-        while (placed < MINES) {
-            let r = Math.floor(Math.random() * SIZE);
-            let c = Math.floor(Math.random() * SIZE);
-            if (Math.abs(r - startR) <= 1 && Math.abs(c - startC) <= 1) continue;
-            if (!board[r][c].isMine) {
-                board[r][c].isMine = true;
-                placed++;
-            }
-        }
-        for (let r = 0; r < SIZE; r++) {
-            for (let c = 0; c < SIZE; c++) {
-                if (board[r][c].isMine) continue;
-                let count = 0;
-                for (let dr = -1; dr <= 1; dr++) {
-                    for (let dc = -1; dc <= 1; dc++) {
-                        let nr = r + dr, nc = c + dc;
-                        if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && board[nr][nc].isMine) count++;
-                    }
-                }
-                board[r][c].count = count;
-            }
-        }
+function drawBlob(ctx,x,y,r,pts){
+  for(let i=0;i<pts*2;i++){const a=(i/(pts*2))*Math.PI*2,rad=r*(i%2===0?1:0.48+Math.random()*0.38),px=x+Math.cos(a)*rad,py=y+Math.sin(a)*rad;i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);}ctx.closePath();
+}
+
+function endGame(win,hitR,hitC){
+  gameState=win?'won':'lost';clearInterval(timerInterval);
+  setFace(win?'happy':'dead');
+  if(!win){
+    for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(board[r][c]===-1&&!flagged[r][c])revealed[r][c]=true;
+    render();spawnExplosion(hitR,hitC);
+    setTimeout(()=>{document.getElementById('overlay-title').textContent='💥 푸딩이 터졌어요!';document.getElementById('overlay-sub').textContent='캐러멜 소스가 사방에... 다시 도전!';document.getElementById('overlay').classList.add('show');},980);
+  } else {
+    render();document.getElementById('overlay-title').textContent='🍮 클리어!';
+    document.getElementById('overlay-sub').textContent=`${seconds}초 만에 지뢰를 모두 찾았어요!`;
+    document.getElementById('overlay').classList.add('show');
+  }
+}
+
+function handleClick(r,c){
+  if(gameState==='won'||gameState==='lost')return;
+  if(flagged[r][c]||revealed[r][c])return;
+  if(firstClick){firstClick=false;placeMines(r,c);gameState='playing';startTimer();}
+  if(board[r][c]===-1){revealed[r][c]=true;const el=getCellEl(r,c);if(el)el.classList.add('pop');endGame(false,r,c);return;}
+  reveal(r,c);render();if(checkWin())endGame(true);
+}
+
+function handleRightClick(e,r,c){
+  e.preventDefault();if(gameState==='won'||gameState==='lost')return;if(revealed[r][c])return;
+  flagged[r][c]=!flagged[r][c];
+  const el=getCellEl(r,c);if(el&&flagged[r][c]){el.classList.remove('jiggle');void el.offsetWidth;el.classList.add('jiggle');}
+  updateMineCount();render();
+}
+
+function render(){
+  const bd=document.getElementById('board');
+  if(bd.querySelectorAll('.cell').length!==ROWS*COLS){
+    bd.innerHTML='';
+    for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+      const el=document.createElement('div');el.className='cell hidden';el.dataset.r=r;el.dataset.c=c;
+      el.addEventListener('click',()=>handleClick(r,c));
+      el.addEventListener('contextmenu',(e)=>handleRightClick(e,r,c));
+      bd.appendChild(el);
     }
+  }
+  const all=bd.querySelectorAll('.cell');
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    const el=all[r*COLS+c],wasJ=el.classList.contains('jiggle');
+    el.className='cell'+(wasJ?' jiggle':'');el.textContent='';
+    if(revealed[r][c]){
+      const v=board[r][c];
+      if(v===-1){el.classList.add('mine-hit');el.textContent='💣';}
+      else{el.classList.add('revealed');if(v>0){el.textContent=v;el.classList.add('n'+v);}}
+    } else if(flagged[r][c]){
+      el.classList.add('flagged');el.textContent='🚩';
+      if(gameState==='lost'&&board[r][c]!==-1)el.classList.add('wrong-flag');
+    } else el.classList.add('hidden');
+  }
+}
 
-    function handleLeftClick(r, c) {
-        if (gameOver || board[r][c].isRevealed || board[r][c].isFlagged) return;
-        if (firstClick) {
-            firstClick = false;
-            generateMines(r, c);
-            timerInterval = setInterval(() => { time++; timerEl.textContent = time; }, 1000);
-        }
-        if (board[r][c].isMine) { endGame(false); return; }
-        reveal(r, c);
-        checkWin();
-    }
-
-    function handleRightClick(r, c) {
-        if (gameOver || board[r][c].isRevealed || firstClick) return;
-        const cell = board[r][c];
-        if (!cell.isFlagged) {
-            cell.isFlagged = true;
-            cell.el.textContent = '🍮';
-            flags++;
-        } else {
-            cell.isFlagged = false;
-            cell.el.textContent = '';
-            flags--;
-        }
-        mineCountEl.textContent = MINES - flags;
-    }
-
-    function reveal(r, c) {
-        if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) return;
-        const cell = board[r][c];
-        if (cell.isRevealed || cell.isFlagged) return;
-        cell.isRevealed = true;
-        cell.el.classList.add('revealed');
-        if (cell.count > 0) {
-            cell.el.textContent = cell.count;
-            cell.el.classList.add(`n-${cell.count}`);
-        } else {
-            for (let dr = -1; dr <= 1; dr++) {
-                for (let dc = -1; dc <= 1; dc++) reveal(r + dr, c + dc);
-            }
-        }
-    }
-
-    function endGame(isWin) {
-        gameOver = true;
-        clearInterval(timerInterval);
-        resetBtn.textContent = isWin ? '😎' : '😵';
-        for (let r = 0; r < SIZE; r++) {
-            for (let c = 0; c < SIZE; c++) {
-                if (board[r][c].isMine) {
-                    board[r][c].el.classList.add('mine');
-                    board[r][c].el.textContent = isWin ? '🍮' : '🥄';
-                }
-            }
-        }
-        setTimeout(() => {
-            alert(isWin ? "🎉 성공! 완벽한 푸딩 마스터!" : "💥 지뢰 발생! 푸딩이 깨졌어요!");
-        }, 10);
-    }
-
-    function checkWin() {
-        for (let r = 0; r < SIZE; r++) {
-            for (let c = 0; c < SIZE; c++) {
-                if (!board[r][c].isMine && !board[r][c].isRevealed) return;
-            }
-        }
-        endGame(true);
-    }
-
-    initGame();
+document.getElementById('reset-btn').addEventListener('click',initBoard);
+initBoard();setTimeout(resizeCanvas,100);
 </script>
-</body>
-</html>
