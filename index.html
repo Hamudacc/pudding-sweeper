@@ -136,6 +136,20 @@
     gap: 8px;
   }
 }
+  /* 🍮 재시작 안내 멘트 스타일 */
+.guide-restart {
+  font-size: 11.5px;
+  color: #a06020;
+  text-align: center;
+  margin-bottom: 12px;
+  background: #fff3c0;
+  padding: 6px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.guide-restart strong {
+  color: #6b3e08;
+}
   
 </style>
 
@@ -239,20 +253,23 @@
 </div>
 
 <div class="guide-box">
-    <p class="guide-title">🎮 조작 방법 안내</p>
-    <div class="guide-content">
-      <div class="guide-item">
-        <span class="guide-device">PC (마우스)</span>
-        <p>• <strong class="highlight-click">좌클릭</strong>: 푸딩 타일 열기</p>
-        <p>• <strong class="highlight-flag">우클릭</strong>: 🚩 깃발 꽂기 / 해제</p>
-      </div>
-      <div class="guide-item">
-        <span class="guide-device">모바일 (터치)</span>
-        <p>• <strong class="highlight-click">터치</strong>: 푸딩 타일 열기</p>
-        <p>• <strong class="highlight-flag">길게 꾹 누르기</strong>: 🚩 깃발 꽂기 / 해제</p>
-      </div>
+  <p class="guide-title">🎮 조작 방법 안내</p>
+  
+  <p class="guide-restart">💡 상단 중앙의 <strong>🍮 푸딩 아이콘</strong>을 누르면 게임이 다시 시작됩니다.</p>
+  
+  <div class="guide-content">
+    <div class="guide-item">
+      <span class="guide-device">PC (마우스)</span>
+      <p>• <strong class="highlight-click">좌클릭</strong>: 푸딩 타일 열기</p>
+      <p>• <strong class="highlight-flag">우클릭</strong>: 🚩 깃발 꽂기 / 해제</p>
+    </div>
+    <div class="guide-item">
+      <span class="guide-device">모바일 (터치)</span>
+      <p>• <strong class="highlight-click">터치</strong>: 푸딩 타일 열기</p>
+      <p>• <strong class="highlight-flag">길게 꾹 누르기</strong>: 🚩 깃발 꽂기 / 해제</p>
     </div>
   </div>
+</div>
 
 <script>
 const ROWS=8, COLS=8, MINES=10; // 기존 10, 10, 20에서 변경
