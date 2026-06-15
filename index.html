@@ -152,6 +152,61 @@
 .guide-restart strong {
   color: #6b3e08;
 }
+
+  /* 🎬 시작 화면 스타일 */
+#start-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 440px;
+  min-height: 320px;
+  text-align: center;
+  background: #fff8e1;
+  border: 2.5px solid #e6a800;
+  border-radius: 24px;
+  box-shadow: 0 6px 0 #b07818;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.start-logo {
+  margin-bottom: 24px;
+}
+
+.game-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #6b3e08;
+  margin-top: 10px;
+  letter-spacing: -0.02em;
+}
+
+/* 🍮 시작 버튼 큼직하고 말랑하게 디자인 */
+#start-btn {
+  padding: 14px 36px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(145deg, #ffb800, #f0a800);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #a06800, 0 6px 10px rgba(120,70,0,0.2);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+#start-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(145deg, #ffc01a, #ffb800);
+}
+
+#start-btn:active {
+  transform: scale(0.95) translateY(3px);
+  box-shadow: 0 2px 0 #a06800;
+}
   
 </style>
 
