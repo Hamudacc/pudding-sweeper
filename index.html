@@ -175,7 +175,7 @@
 </div>
 
 <script>
-const ROWS=10,COLS=10,MINES=20;
+const ROWS=8, COLS=8, MINES=10; // 기존 10, 10, 20에서 변경
 let board=[],revealed=[],flagged=[],gameState='idle',timerInterval=null,seconds=0,firstClick=true;
 let pudParticles=[],rafId=null;
 const canvas=document.getElementById('pudding-canvas');
