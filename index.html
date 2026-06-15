@@ -106,7 +106,7 @@
 </style>
 
 <div id="app">
-  <h2 class="sr-only">커스터드 푸딩 지뢰찾기</h2>
+  <h2 class="sr-only">커스터드 푸딩 찾기</h2>
   
   <div id="start-screen">
     <div class="start-logo">
@@ -125,14 +125,14 @@
     <circle cx="57" cy="56" r="0.8" fill="#FFFFFF"/>
     <path d="M 47 62 Q 50 65 53 62" stroke="#6B3E08" stroke-width="2.5" fill="none" stroke-linecap="round"/>
   </svg>
-  <h1 class="game-title">커스터드 푸딩 지뢰찾기</h1>
+  <h1 class="game-title">커스터드 푸딩 찾기</h1>
 </div>
     <button id="start-btn">게임 시작하기</button>
   </div>
 
   <div id="panel" style="display: none;">
     <div class="info-box">
-      <span class="info-label">💣 남은 지뢰</span>
+      <span class="info-label">💣 남은 푸딩</span>
       <span class="info-value" id="mine-count">10</span>
     </div>
     
@@ -303,7 +303,7 @@ function endGame(win,hitR,hitC){
     setTimeout(()=>{document.getElementById('overlay-title').textContent='💥 푸딩이 터졌어요!';document.getElementById('overlay-sub').textContent='캐러멜 소스가 사방에... 다시 도전!';document.getElementById('overlay').classList.add('show');},980);
   } else {
     render();document.getElementById('overlay-title').textContent='🍮 클리어!';
-    document.getElementById('overlay-sub').textContent=`${seconds}초 만에 지뢰를 모두 찾았어요!`;
+    document.getElementById('overlay-sub').textContent=`${seconds}초 만에 푸딩를 모두 찾았어요!`;
     document.getElementById('overlay').classList.add('show');
   }
 }
