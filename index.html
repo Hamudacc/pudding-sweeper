@@ -210,7 +210,15 @@ const canvas=document.getElementById('pudding-canvas');
 const ctx=canvas.getContext('2d');
 
 function resizeCanvas(){const w=document.getElementById('board-wrap');if(w){canvas.width=w.offsetWidth;canvas.height=w.offsetHeight;}}
-function setFace(name){}
+// 🎬 승리/패배 상태에 따라 리셋 버튼의 표정을 바꾸는 함수
+function setFace(name){
+  // 모든 표정 레이어에서 active 클래스를 빼서 숨깁니다.
+  document.querySelectorAll('#reset-btn .face').forEach(f => f.classList.remove('active'));
+  
+  // 원하는 표정(normal 또는 dead)만 찾아서 active 클래스를 주어 보여줍니다.
+  const el = document.getElementById('face-' + name);
+  if(el) el.classList.add('active');
+}
 function initBoard(){
   board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
   revealed=Array.from({length:ROWS},()=>Array(COLS).fill(false));
