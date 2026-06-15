@@ -171,11 +171,7 @@ const canvas=document.getElementById('pudding-canvas');
 const ctx=canvas.getContext('2d');
 
 function resizeCanvas(){const w=document.getElementById('board-wrap');if(w){canvas.width=w.offsetWidth;canvas.height=w.offsetHeight;}}
-function setFace(name){
-  document.querySelectorAll('.face').forEach(f=>f.classList.remove('active'));
-  const el=document.getElementById('face-'+name);
-  if(el)el.classList.add('active');
-}
+function setFace(name){}
 function initBoard(){
   board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
   revealed=Array.from({length:ROWS},()=>Array(COLS).fill(false));
