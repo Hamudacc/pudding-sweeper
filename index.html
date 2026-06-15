@@ -89,3 +89,296 @@
 }
 .start-logo {  margin-bottom: 15px;}
 .game-title {  font-size: 22px;  font-weight: 800;  color: #6b3e08;  margin-top: 10px;  letter-spacing: -0.02em;}
+#start-btn {
+  padding: 14px 36px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(145deg, #ffb800, #f0a800);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #a06800, 0 6px 10px rgba(120,70,0,0.2);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+#start-btn:hover {  transform: scale(1.05);  background: linear-gradient(145deg, #ffc01a, #ffb800);}
+#start-btn:active {  transform: scale(0.95) translateY(3px);  box-shadow: 0 2px 0 #a06800;}
+</style>
+
+<div id="app">
+  <h2 class="sr-only">커스터드 푸딩 지뢰찾기</h2>
+  
+  <div id="start-screen">
+    <div class="start-logo">
+      <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg" style="width: 100px; height: 112px;">
+        <path d="M 12 68 Q 10 50 40 46 Q 70 50 68 68 Q 60 78 40 79 Q 20 78 12 68 Z" fill="url(#bodyGrad)"/>
+        <path d="M 22 47 Q 20 30 40 26 Q 60 30 58 47 Q 50 44 40 44 Q 30 44 22 47 Z" fill="url(#bodyGrad)"/>
+        <ellipse cx="40" cy="46" rx="18" ry="5" fill="url(#caramelGrad)"/>
+        <path d="M 28 49 Q 26 56 27 61" stroke="#a05800" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <ellipse cx="27" cy="62" rx="3.5" ry="4" fill="#a05800"/>
+        <path d="M 52 49 Q 54 57 53 63" stroke="#a05800" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="53" cy="64" rx="3" ry="3.5" fill="#a05800"/>
+        <ellipse cx="40" cy="28" rx="16" ry="14" fill="url(#bodyGrad)"/>
+        <g class="face active">
+          <circle cx="35" cy="27" r="2.2" fill="#7a3c00"/>
+          <circle cx="45" cy="27" r="2.2" fill="#7a3c00"/>
+          <path d="M 34 33 Q 40 37 46 33" stroke="#7a3c00" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <h1 class="game-title">커스터드 푸딩 지뢰찾기</h1>
+    </div>
+    <button id="start-btn">🍮 게임 시작하기</button>
+  </div>
+
+  <div id="panel" style="display: none;">
+    <div class="info-box">
+      <span class="info-label">💣 남은 지뢰</span>
+      <span class="info-value" id="mine-count">10</span>
+    </div>
+    
+    <button id="reset-btn" aria-label="다시 시작">
+      <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="bodyGrad" cx="38%" cy="32%" r="62%">
+            <stop offset="0%" stop-color="#ffe87a"/>
+            <stop offset="55%" stop-color="#f5c020"/>
+            <stop offset="100%" stop-color="#d49000"/>
+          </radialGradient>
+          <radialGradient id="caramelGrad" cx="50%" cy="30%" r="60%">
+            <stop offset="0%" stop-color="#d48820"/>
+            <stop offset="100%" stop-color="#8a4400"/>
+          </radialGradient>
+          <radialGradient id="plateGrad" cx="50%" cy="30%" r="60%">
+            <stop offset="0%" stop-color="#fff3cc"/>
+            <stop offset="100%" stop-color="#e8d090"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="40" cy="82" rx="30" ry="6" fill="url(#plateGrad)" stroke="#d4aa40" stroke-width="1"/>
+        <ellipse cx="40" cy="80" rx="28" ry="4.5" fill="#fff8e0"/>
+        <path d="M 12 68 Q 10 50 40 46 Q 70 50 68 68 Q 60 78 40 79 Q 20 78 12 68 Z" fill="url(#bodyGrad)"/>
+        <path d="M 22 47 Q 20 30 40 26 Q 60 30 58 47 Q 50 44 40 44 Q 30 44 22 47 Z" fill="url(#bodyGrad)"/>
+        <ellipse cx="40" cy="46" rx="18" ry="5" fill="url(#caramelGrad)"/>
+        <path d="M 28 49 Q 26 56 27 61" stroke="#a05800" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <ellipse cx="27" cy="62" rx="3.5" ry="4" fill="#a05800"/>
+        <path d="M 52 49 Q 54 57 53 63" stroke="#a05800" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="53" cy="64" rx="3" ry="3.5" fill="#a05800"/>
+        <path d="M 38 50 Q 37 55 38 58" stroke="#b06010" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="38" cy="59" rx="2.2" ry="2.5" fill="#b06010"/>
+        <ellipse cx="40" cy="28" rx="16" ry="14" fill="url(#bodyGrad)"/>
+        <ellipse cx="33" cy="20" rx="7" ry="5" fill="rgba(255,255,255,0.38)" transform="rotate(-20 33 20)"/>
+        <ellipse cx="31" cy="18" rx="3" ry="2" fill="rgba(255,255,255,0.65)" transform="rotate(-20 31 18)"/>
+        <ellipse cx="33" cy="58" rx="9" ry="6" fill="rgba(255,255,255,0.18)" transform="rotate(-10 33 58)"/>
+        <g class="face active" id="face-normal">
+          <circle cx="35" cy="27" r="2.2" fill="#7a3c00"/>
+          <circle cx="45" cy="27" r="2.2" fill="#7a3c00"/>
+          <path d="M 34 33 Q 40 37 46 33" stroke="#7a3c00" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="face" id="face-happy">
+          <circle cx="35" cy="27" r="2.2" fill="#7a3c00"/>
+          <circle cx="45" cy="27" r="2.2" fill="#7a3c00"/>
+          <path d="M 33 32 Q 40 39 47 32" stroke="#7a3c00" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M 32 24 Q 35 21 38 24" stroke="#7a3c00" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M 42 24 Q 45 21 48 24" stroke="#7a3c00" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="face" id="face-dead">
+          <line x1="32" y1="24" x2="37" y2="29" stroke="#7a3c00" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="37" y1="24" x2="32" y2="29" stroke="#7a3c00" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="43" y1="24" x2="48" y2="29" stroke="#7a3c00" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="48" y1="24" x2="43" y2="29" stroke="#7a3c00" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M 34 36 Q 40 31 46 36" stroke="#7a3c00" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </button>
+    
+    <div class="info-box">
+      <span class="info-label">⏱ 시간</span>
+      <span class="info-value" id="timer">0</span>
+    </div>
+  </div>
+
+  <div id="board-wrap" style="display: none;">
+    <div id="board"></div>
+    <canvas id="pudding-canvas"></canvas>
+    <div id="overlay">
+      <div id="overlay-bg"></div>
+      <div id="overlay-box">
+        <span id="overlay-title"></span>
+        <span id="overlay-sub"></span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="guide-box">
+    <p class="guide-title">🎮 조작 방법 안내</p>
+    <p class="guide-restart">💡 상단 중앙의 <strong>🍮 푸딩 아이콘</strong>을 누르면 게임이 다시 시작됩니다.</p>
+    <div class="guide-content">
+      <div class="guide-item">
+        <span class="guide-device">PC (마우스)</span>
+        <p>• <strong class="highlight-click">좌클릭</strong>: 푸딩 타일 열기</p>
+        <p>• <strong class="highlight-flag">우클릭</strong>: 🚩 깃발 꽂기 / 해제</p>
+      </div>
+      <div class="guide-item">
+        <span class="guide-device">모바일 (터치)</span>
+        <p>• <strong class="highlight-click">터치</strong>: 푸딩 타일 열기</p>
+        <p>• <strong class="highlight-flag">길게 꾹 누르기</strong>: 🚩 깃발 꽂기 / 해제</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ROWS=8, COLS=8, MINES=10;
+let board=[],revealed=[],flagged=[],gameState='idle',timerInterval=null,seconds=0,firstClick=true;
+let pudParticles=[],rafId=null;
+const canvas=document.getElementById('pudding-canvas');
+const ctx=canvas.getContext('2d');
+
+function resizeCanvas(){const w=document.getElementById('board-wrap');if(w){canvas.width=w.offsetWidth;canvas.height=w.offsetHeight;}}
+function setFace(name){
+  document.querySelectorAll('.face').forEach(f=>f.classList.remove('active'));
+  const el=document.getElementById('face-'+name);
+  if(el)el.classList.add('active');
+}
+function initBoard(){
+  board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
+  revealed=Array.from({length:ROWS},()=>Array(COLS).fill(false));
+  flagged=Array.from({length:ROWS},()=>Array(COLS).fill(false));
+  gameState='idle';firstClick=true;
+  clearInterval(timerInterval);seconds=0;
+  document.getElementById('timer').textContent='0';
+  document.getElementById('mine-count').textContent=MINES;
+  setFace('normal');
+  document.getElementById('overlay').classList.remove('show');
+  pudParticles=[];cancelAnimationFrame(rafId);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  render();setTimeout(resizeCanvas,50);
+}
+function placeMines(safeR,safeC){
+  const safe=new Set();
+  for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=safeR+dr,nc=safeC+dc;if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS)safe.add(nr*COLS+nc);}
+  let placed=0;
+  while(placed<MINES){const idx=Math.floor(Math.random()*ROWS*COLS),r=Math.floor(idx/COLS),c=idx%COLS;if(!safe.has(idx)&&board[r][c]!==-1){board[r][c]=-1;placed++;}}
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    if(board[r][c]===-1)continue;let cnt=0;
+    for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&board[nr][nc]===-1)cnt++;}
+    board[r][c]=cnt;
+  }
+}
+function startTimer(){timerInterval=setInterval(()=>{seconds++;document.getElementById('timer').textContent=seconds;},1000);}
+function countFlags(){let f=0;for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(flagged[r][c])f++;return f;}
+function updateMineCount(){document.getElementById('mine-count').textContent=MINES-countFlags();}
+function getCellEl(r,c){return document.querySelector(`[data-r="${r}"][data-c="${c}"]`);}
+function reveal(r,c){
+  if(r<0||r>=ROWS||c<0||c>=COLS||revealed[r][c]||flagged[r][c])return;
+  revealed[r][c]=true;
+  const el=getCellEl(r,c);if(el){el.classList.remove('jiggle');void el.offsetWidth;el.classList.add('jiggle');}
+  if(board[r][c]===0)for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++)reveal(r+dr,c+dc);
+}
+function checkWin(){for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(board[r][c]!==-1&&!revealed[r][c])return false;return true;}
+function spawnExplosion(hitR,hitC){
+  resizeCanvas();
+  const pad=12,cw=38,gap=4;
+  const cx=pad+(hitC*(cw+gap))+cw/2,cy=pad+(hitR*(cw+gap))+cw/2;
+  const custard=['#ffe566','#ffd030','#f5bc18','#ffe8a0','#fff3cc'];
+  const caramel=['#c87010','#9a5005','#e09820','#d08010','#7a3800'];
+  const cream=['#fffbea','#fff6c8','#fef0a0'];
+  for(let i=0;i<160;i++){
+    const angle=Math.random()*Math.PI*2,speed=1+Math.random()*10,size=3+Math.random()*16;
+    const t=Math.random();
+    const color=t<0.4?custard[Math.floor(Math.random()*custard.length)]:t<0.72?caramel[Math.floor(Math.random()*caramel.length)]:cream[Math.floor(Math.random()*cream.length)];
+    const isSplat=Math.random()<0.38,isDrip=Math.random()<0.22;
+    pudParticles.push({x:cx,y:cy,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-Math.random()*5,size,color,alpha:1,gravity:0.2+Math.random()*0.28,wobble:Math.random()*Math.PI*2,wobbleSpeed:0.07+Math.random()*0.2,sx:0.55+Math.random()*0.8,sy:0.55+Math.random()*0.8,isSplat,isDrip,life:0,maxLife:50+Math.random()*55,rot:Math.random()*Math.PI*2,rotS:(Math.random()-0.5)*0.2,dripLen:isDrip?8+Math.random()*22:0});
+  }
+  animatePudding();
+}
+function animatePudding(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pudParticles=pudParticles.filter(p=>p.alpha>0.02&&p.life<p.maxLife);
+  for(const p of pudParticles){
+    p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.vx*=0.97;p.wobble+=p.wobbleSpeed;
+    p.life++;p.alpha=1-(p.life/p.maxLife);p.rot+=p.rotS;
+    ctx.save();ctx.globalAlpha=p.alpha;
+    if(p.isDrip){
+      ctx.translate(p.x,p.y);ctx.fillStyle=p.color;
+      ctx.beginPath();ctx.ellipse(0,0,p.size*0.5,p.size*0.75,0,0,Math.PI*2);ctx.fill();
+      const dy=p.size*0.6+p.dripLen*(p.life/p.maxLife)*1.2;
+      ctx.beginPath();ctx.moveTo(-p.size*0.38,p.size*0.55);ctx.quadraticCurveTo(0,dy,p.size*0.38,p.size*0.55);ctx.fill();
+    } else {
+      ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      const wob=Math.sin(p.wobble)*0.28,r=p.size*(1-(p.life/p.maxLife)*0.28);
+      if(p.isSplat){ctx.scale(p.sx+wob,p.sy-wob*0.5);ctx.beginPath();drawBlob(ctx,0,0,r,6);}
+      else{ctx.scale(1+wob*0.25,1-wob*0.18);ctx.beginPath();ctx.ellipse(0,0,r,r,0,0,Math.PI*2);}
+      ctx.fillStyle=p.color;ctx.fill();
+      ctx.beginPath();ctx.ellipse(-r*0.25,-r*0.28,r*0.28,r*0.18,-0.6,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.55)';ctx.fill();
+    }
+    ctx.restore();
+  }
+  if(pudParticles.length>0)rafId=requestAnimationFrame(animatePudding);
+  else ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+function drawBlob(ctx,x,y,r,pts){
+  for(let i=0;i<pts*2;i++){const a=(i/(pts*2))*Math.PI*2,rad=r*(i%2===0?1:0.48+Math.random()*0.38),px=x+Math.cos(a)*rad,py=y+Math.sin(a)*rad;i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);}ctx.closePath();
+}
+function endGame(win,hitR,hitC){
+  gameState=win?'won':'lost';clearInterval(timerInterval);
+  setFace(win?'happy':'dead');
+  if(!win){
+    for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(board[r][c]===-1&&!flagged[r][c])revealed[r][c]=true;
+    render();spawnExplosion(hitR,hitC);
+    setTimeout(()=>{document.getElementById('overlay-title').textContent='💥 푸딩이 터졌어요!';document.getElementById('overlay-sub').textContent='캐러멜 소스가 사방에... 다시 도전!';document.getElementById('overlay').classList.add('show');},980);
+  } else {
+    render();document.getElementById('overlay-title').textContent='🍮 클리어!';
+    document.getElementById('overlay-sub').textContent=`${seconds}초 만에 지뢰를 모두 찾았어요!`;
+    document.getElementById('overlay').classList.add('show');
+  }
+}
+function handleClick(r,c){
+  if(gameState==='won'||gameState==='lost')return;
+  if(flagged[r][c]||revealed[r][c])return;
+  if(firstClick){firstClick=false;placeMines(r,c);gameState='playing';startTimer();}
+  if(board[r][c]===-1){revealed[r][c]=true;const el=getCellEl(r,c);if(el)el.classList.add('pop');endGame(false,r,c);return;}
+  reveal(r,c);render();if(checkWin())endGame(true);
+}
+function handleRightClick(e,r,c){
+  e.preventDefault();if(gameState==='won'||gameState==='lost')return;if(revealed[r][c])return;
+  flagged[r][c]=!flagged[r][c];
+  const el=getCellEl(r,c);if(el&&flagged[r][c]){el.classList.remove('jiggle');void el.offsetWidth;el.classList.add('jiggle');}
+  updateMineCount();render();
+}
+function render(){
+  const bd=document.getElementById('board');
+  if(bd.querySelectorAll('.cell').length!==ROWS*COLS){
+    bd.innerHTML='';
+    for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+      const el=document.createElement('div');el.className='cell hidden';el.dataset.r=r;el.dataset.c=c;
+      el.addEventListener('click',()=>handleClick(r,c));
+      el.addEventListener('contextmenu',(e)=>handleRightClick(e,r,c));
+      bd.appendChild(el);
+    }
+  }
+  const all=bd.querySelectorAll('.cell');
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    const el=all[r*COLS+c],wasJ=el.classList.contains('jiggle');
+    el.className='cell'+(wasJ?' jiggle':'');el.textContent='';
+    if(revealed[r][c]){
+      const v=board[r][c];
+      if(v===-1){el.classList.add('mine-hit');el.textContent='💣';}
+      else{el.classList.add('revealed');if(v>0){el.textContent=v;el.classList.add('n'+v);}}
+    } else if(flagged[r][c]){
+      el.classList.add('flagged');el.textContent='🚩';
+      if(gameState==='lost'&&board[r][c]!==-1)el.classList.add('wrong-flag');
+    } else el.classList.add('hidden');
+  }
+}
+
+document.getElementById('reset-btn').addEventListener('click',initBoard);
+initBoard();
+
+// 🎬 게임 시작 버튼 클릭 화면 전환 이벤트
+document.getElementById('start-btn').addEventListener('click', () => {
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('panel').style.display = 'flex';
+  document.getElementById('board-wrap').style.display = 'inline-block';
+  resizeCanvas();
+});
+</script>
