@@ -74,9 +74,11 @@
 @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(0) rotate(25deg);opacity:0}}
 .face{display:none}.face.active{display:block}
 
-  /* 📝 하단 조작법 안내 상자 스타일 */
+/* 📝 하단 조작법 안내 상자 스타일 (가운데 정렬 반영) */
 .guide-box {
   margin-top: 18px;
+  margin-left: auto;  /* 👈 PC 화면에서 왼쪽 여백을 자동으로 채워 가운데로 보냄 */
+  margin-right: auto; /* 👈 PC 화면에서 오른쪽 여백을 자동으로 채워 가운데로 보냄 */
   width: 100%;
   max-width: 440px;
   background: #fffdf6;
