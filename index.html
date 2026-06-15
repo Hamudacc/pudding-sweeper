@@ -141,18 +141,28 @@
     </div>
     
     <button id="reset-btn" aria-label="다시 시작" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;">
-  <!-- ✨ 귀여운 말랑 푸딩 캐릭터 (미니 리셋 버튼용) -->
   <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 64px; height: 64px;">
     <path d="M 25 75 Q 20 45 40 40 Q 60 40 75 45 Q 80 75 75 75 Q 50 82 25 75 Z" fill="#FFEB80" stroke="#6B3E08" stroke-width="3.5" stroke-linejoin="round"/>
     <path d="M 33 46 Q 30 35 50 35 Q 70 35 67 46 Q 60 48 50 46 Q 40 48 33 46 Z" fill="#995500" stroke="#6B3E08" stroke-width="3.5" stroke-linejoin="round"/>
     <path d="M 38 47 Q 36 57 39 57 Q 42 57 41 47" fill="#995500" stroke="#6B3E08" stroke-width="3" stroke-linejoin="round"/>
     <ellipse cx="32" cy="58" rx="4" ry="2.5" fill="#FF9999"/>
     <ellipse cx="68" cy="58" rx="4" ry="2.5" fill="#FF9999"/>
-    <circle cx="42" cy="54" r="3" fill="#6B3E08"/>
-    <circle cx="41" cy="53" r="0.8" fill="#FFFFFF"/>
-    <circle cx="58" cy="54" r="3" fill="#6B3E08"/>
-    <circle cx="57" cy="53" r="0.8" fill="#FFFFFF"/>
-    <path d="M 47 59 Q 50 62 53 59" stroke="#6B3E08" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <g class="face active" id="face-normal">
+      <circle cx="42" cy="54" r="3" fill="#6B3E08"/>
+      <circle cx="41" cy="53" r="0.8" fill="#FFFFFF"/>
+      <circle cx="58" cy="54" r="3" fill="#6B3E08"/>
+      <circle cx="57" cy="53" r="0.8" fill="#FFFFFF"/>
+      <path d="M 47 59 Q 50 62 53 59" stroke="#6B3E08" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <g class="face" id="face-dead">
+      <path d="M 39 52 L 44 56 L 39 60" stroke="#6B3E08" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 61 52 L 56 56 L 61 60" stroke="#6B3E08" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 47 62 Q 50 58 53 62" stroke="#6B3E08" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M 43 57 Q 41 68 43 69 Q 45 68 43 57" fill="#A0D8EF" stroke="#6B3E08" stroke-width="1.5"/>
+      <path d="M 57 57 Q 59 68 57 69 Q 55 68 57 57" fill="#A0D8EF" stroke="#6B3E08" stroke-width="1.5"/>
+    </g>
   </svg>
 </button>
     
