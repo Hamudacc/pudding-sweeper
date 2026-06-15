@@ -501,4 +501,18 @@ function render(){
 
 document.getElementById('reset-btn').addEventListener('click',initBoard);
 initBoard();setTimeout(resizeCanvas,100);
+  
+  // 🎬 게임 시작 버튼 클릭 이벤트 리스너 추가
+document.getElementById('start-btn').addEventListener('click', () => {
+  // 1. 시작 화면을 숨깁니다.
+  document.getElementById('start-screen').style.display = 'none';
+  
+  // 2. 숨겨두었던 게임 화면(#panel, #board-wrap)을 보여줍니다.
+  document.getElementById('panel').style.display = 'flex';
+  document.getElementById('board-wrap').style.display = 'inline-block';
+  
+  // 3. 캔버스 크기를 재조정하고 게임판을 초기화합니다.
+  resizeCanvas();
+});
+  
 </script>
