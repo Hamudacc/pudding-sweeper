@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미니 푸딩 지뢰찾기 🍮</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background-color: #fffde7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .game-container {
+            background-color: #fff8e1;
+            border: 4px solid #5d4037;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 8px 24px rgba(93, 64, 55, 0.2);
+            text-align: center;
+        }
+        h1 {
+            color: #5d4037;
+            margin: 0 0 10px 0;
+            font-size: 20px;
+        }
+        #status-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f57c00;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        #reset-btn {
+            background: #fff;
+            border: 2px solid #5d4037;
+            font-size: 18px;
+            padding: 2px 6px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #board {
+            display: grid;
+            grid-template-columns: repeat(10, 32px);
+            grid-template-rows: repeat(10, 32px);
+            gap: 2px;
+            background-color: #bcaaa4;
+            padding: 4px;
+            border-radius: 6px;
+        }
+        .cell {
+            width: 32px;
+            height: 32px;
+            background-color: #ffe082;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: inset 0 -3px 0 #ffd54f;
+        }
+        .cell.revealed {
+            background-color: #fff9c4;
+            box-shadow: none;
+            border: 1px solid #e0dcb5;
+        }
+        .cell.mine {
+            background-color: #ff8a80;
+        }
+        .n-1 { color: #1e88e5; }
+        .n-2 { color: #43a047; }
+        .n-3 { color: #e53935; }
+        .n-4 { color: #3949ab; }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>🍮 미니 푸딩 지뢰찾기 (10x10)</h1>
+    <div id="status-panel">
+        <div>🍮 푸딩: <span id="mine-count">10</span></div>
+        <button id="reset-btn" onclick="initGame()">😊</button>
+        <div>⏳ <span id="timer">0</span>초</div>
+    </div>
+    <div id="board"></div>
+</div>
+
+<script>
+    const SIZE = 10;
+    const MINES = 10;
+    let board = [];
+    let firstClick = true;
+    let gameOver = false;
+    let timerInterval = null;
+    let time = 0;
+    let flags = 0;
+
+    const boardEl = document.getElementById('board');
+    const mineCountEl = document.getElementById('mine-count');
+    const timerEl = document.getElementById('timer');
+    const resetBtn = document.getElementById('reset-btn');
+
+    function initGame() {
+        boardEl.innerHTML = '';
+        board = [];
+        firstClick = true;
+        gameOver = false;
+        time = 0;
+        flags = 0;
+        resetBtn.textContent = '😊';
+        mineCountEl.textContent = MINES;
+        timerEl.textContent = 0;
+        clearInterval(timerInterval);
+
+        for (let r = 0; r < SIZE; r++) {
+            board[r] = [];
+            for (let c = 0; c < SIZE; c++) {
+                const el = document.createElement('div');
+                el.classList.add('cell');
+                el.addEventListener('click', () => handleLeftClick(r, c));
+                el.addEventListener('contextmenu', (e) => { e.preventDefault(); handleRightClick(r, c); });
+                boardEl.appendChild(el);
+                board[r][c] = { isMine: false, isRevealed: false, isFlagged: false, count: 0, el: el };
+            }
+        }
+    }
+
+    function generateMines(startR, startC) {
+        let placed = 0;
+        while (placed < MINES) {
+            let r = Math.floor(Math.random() * SIZE);
+            let c = Math.floor(Math.random() * SIZE);
+            if (Math.abs(r - startR) <= 1 && Math.abs(c - startC) <= 1) continue;
+            if (!board[r][c].isMine) {
+                board[r][c].isMine = true;
+                placed++;
+            }
+        }
+        for (let r = 0; r < SIZE; r++) {
+            for (let c = 0; c < SIZE; c++) {
+                if (board[r][c].isMine) continue;
+                let count = 0;
+                for (let dr = -1; dr <= 1; dr++) {
+                    for (let dc = -1; dc <= 1; dc++) {
+                        let nr = r + dr, nc = c + dc;
+                        if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE && board[nr][nc].isMine) count++;
+                    }
+                }
+                board[r][c].count = count;
+            }
+        }
+    }
+
+    function handleLeftClick(r, c) {
+        if (gameOver || board[r][c].isRevealed || board[r][c].isFlagged) return;
+        if (firstClick) {
+            firstClick = false;
+            generateMines(r, c);
+            timerInterval = setInterval(() => { time++; timerEl.textContent = time; }, 1000);
+        }
+        if (board[r][c].isMine) { endGame(false); return; }
+        reveal(r, c);
+        checkWin();
+    }
+
+    function handleRightClick(r, c) {
+        if (gameOver || board[r][c].isRevealed || firstClick) return;
+        const cell = board[r][c];
+        if (!cell.isFlagged) {
+            cell.isFlagged = true;
+            cell.el.textContent = '🍮';
+            flags++;
+        } else {
+            cell.isFlagged = false;
+            cell.el.textContent = '';
+            flags--;
+        }
+        mineCountEl.textContent = MINES - flags;
+    }
+
+    function reveal(r, c) {
+        if (r < 0 || r >= SIZE || c < 0 || c >= SIZE) return;
+        const cell = board[r][c];
+        if (cell.isRevealed || cell.isFlagged) return;
+        cell.isRevealed = true;
+        cell.el.classList.add('revealed');
+        if (cell.count > 0) {
+            cell.el.textContent = cell.count;
+            cell.el.classList.add(`n-${cell.count}`);
+        } else {
+            for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) reveal(r + dr, c + dc);
+            }
+        }
+    }
+
+    function endGame(isWin) {
+        gameOver = true;
+        clearInterval(timerInterval);
+        resetBtn.textContent = isWin ? '😎' : '😵';
+        for (let r = 0; r < SIZE; r++) {
+            for (let c = 0; c < SIZE; c++) {
+                if (board[r][c].isMine) {
+                    board[r][c].el.classList.add('mine');
+                    board[r][c].el.textContent = isWin ? '🍮' : '🥄';
+                }
+            }
+        }
+        setTimeout(() => {
+            alert(isWin ? "🎉 성공! 완벽한 푸딩 마스터!" : "💥 지뢰 발생! 푸딩이 깨졌어요!");
+        }, 10);
+    }
+
+    function checkWin() {
+        for (let r = 0; r < SIZE; r++) {
+            for (let c = 0; c < SIZE; c++) {
+                if (!board[r][c].isMine && !board[r][c].isRevealed) return;
+            }
+        }
+        endGame(true);
+    }
+
+    initGame();
+</script>
+</body>
+</html>
