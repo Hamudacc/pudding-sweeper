@@ -19,13 +19,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center;  <-- 이 줄을 삭제하거나 주석 처리하세요 */
-  padding: 10px;
-  width: 100vw;           
-  min-height: 100vh;      /* 100vh에서 min-height: 100vh로 변경 */
+  justify-content: center; /* 다시 추가 */
+  min-height: 100vh;       /* 화면이 작을 땐 여기서부터 시작 */
+  padding: 20px 10px;      /* 상하 여백을 충분히 줌 */
+  width: 100vw;
   box-sizing: border-box;
-  overflow-x: hidden;     /* 가로 스크롤 방지 */
-  padding-top: 20px;      /* 상단에 약간의 여백 추가 */
+  overflow-x: hidden;      /* 가로 스크롤 방지 */
 }
 #panel{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:430px;background:#fff8e1;border:2px solid #e6a800;border-radius:20px;padding:8px 20px;margin-bottom:10px;box-shadow:0 4px 0 #b87800,inset 0 1px 0 rgba(255,255,255,0.9)}
 
