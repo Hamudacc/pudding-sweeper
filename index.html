@@ -140,18 +140,33 @@ body{background:transparent}
 .cell.pop{animation:pop 0.22s ease forwards}
 @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(0) rotate(25deg);opacity:0}}
 .face{display:none}.face.active{display:block}
-#start-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;width:100%;max-width:440px;text-align:center;background:#fff8e1;border:2.5px solid #e6a800;border-radius:24px;box-shadow:0 6px 0 #b07818;margin-bottom:15px}
+#start-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  background: #fff8e1;
+  border: 2.5px solid #e6a800;
+  border-radius: 24px;
+  box-shadow: 0 6px 0 #b07818;
+  margin-bottom: 5px; /* 아래 조작법 박스와의 간격 */
+  gap: 16px; /* 로고/제목과 버튼 사이의 간격을 크게 띄움 */
+}
 .game-title{font-size:22px;font-weight:800;color:#6b3e08;margin-top:10px;letter-spacing:-0.02em}
 #start-btn{padding:14px 36px;font-size:16px;font-weight:700;color:#fff;background:linear-gradient(145deg,#ffb800,#f0a800);border:none;border-radius:16px;cursor:pointer;box-shadow:0 5px 0 #a06800;transition:transform 0.1s}
 #start-btn:hover{transform:scale(1.05)}
 #start-btn:active{transform:scale(0.95) translateY(3px);box-shadow:0 2px 0 #a06800}
 .guide-box{margin-top:15px;width:90%;max-width:440px;text-align:center}
-.guide-title{font-size:13px;font-weight:700;color:#8a5e10;margin-bottom:10px}
-.guide-restart{font-size:11.5px;color:#a06020;text-align:center;margin-bottom:12px;background:#fff3c0;padding:6px;border-radius:8px;font-weight:500}
+.guide-title{font-size:13px;font-weight:700;color:#8a5e10;margin-bottom:8px}
+.guide-restart{font-size:11.5px;color:#a06020;text-align:center;margin-bottom:7px;background:#fff3c0;padding:6px;border-radius:8px;font-weight:500}
 .guide-restart strong{color:#6b3e08}
 .guide-content{display:flex;gap:12px}
 .guide-item{flex:1;background:rgba(255,248,225,0.6);border-radius:10px;padding:10px;font-size:11px;color:#6b3e08;line-height:1.6}
-.guide-device{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#d4a030;padding:2px 6px;border-radius:6px;margin-bottom:6px}
+.guide-device{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:#d4a030;padding:2px 6px;border-radius:6px;margin-bottom:5px}
 .highlight-click{color:#1a7a38}.highlight-flag{color:#b01a1a}
 </style>
 </head>
@@ -172,6 +187,7 @@ body{background:transparent}
       </svg>
       <h1 class="game-title">커스터드 푸딩 찾기</h1>
     </div>
+    
     <button id="start-btn">게임 시작하기</button>
   </div>
 
