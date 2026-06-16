@@ -7,11 +7,44 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:transparent}
 #app{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:16px 10px;width:100vw;overflow-x:hidden}
-#panel{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:430px;background:#fff8e1;border:2px solid #e6a800;border-radius:20px;padding:8px 20px;margin-bottom:10px;box-shadow:0 4px 0 #b87800,inset 0 1px 0 rgba(255,255,255,0.9)}
+#panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 양 끝 정렬 */
+  width: 100%;
+  max-width: 430px;
+  background: #fff8e1;
+  border: 2px solid #e6a800;
+  border-radius: 20px;
+  padding: 8px 10px; /* 좌우 패딩을 줄여 공간 확보 */
+  margin-bottom: 10px;
+  box-shadow: 0 4px 0 #b87800, inset 0 1px 0 rgba(255,255,255,0.9);
+}
 .info-label{font-size:11px;color:#8a5e10;letter-spacing:0.04em;font-weight:600}
 .info-value{font-size:22px;font-weight:700;color:#6b3e08;font-variant-numeric:tabular-nums;min-width:44px;text-align:center}
-.info-box{display:flex;flex-direction:column;align-items:center;gap:1px}
-#reset-btn{width:72px;height:72px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.15s;flex-shrink:0;background:transparent;padding:0}
+.info-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  width: 80px; /* 각 정보 박스 너비를 고정하여 푸딩 버튼을 중앙으로 밀어냄 */
+}
+#reset-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s;
+  flex-shrink: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  outline: none; /* 이 줄을 추가하시면 됩니다 */
+}
 #reset-btn:hover{transform:scale(1.12) rotate(-4deg)}
 #reset-btn:active{transform:scale(0.9)}
 #reset-btn svg{width:72px;height:72px;display:block;overflow:visible}
