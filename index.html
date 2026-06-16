@@ -25,7 +25,7 @@ body{background:transparent}
   max-width: 440px;
   box-shadow: 0 6px 0 #b07818, inset 0 2px 6px rgba(255,255,200,0.8);
   
-  /* 이 속성들을 확인/수정하세요 */
+ 
   overflow: hidden; 
   box-sizing: border-box; /* 패딩이 전체 너비에 포함되도록 강제 */
   display: inline-block;  /* 박스가 내용물 크기에 맞춰지도록 */
@@ -36,7 +36,7 @@ body{background:transparent}
   grid-template-columns: repeat(8, 1fr);
   gap: 4px;
   width: 100%;
-  /* 여기에 최대 너비를 주어 블록이 화면 전체를 덮지 않게 합니다 */
+  /* 여기에 최대 너비를 주어 블록이 화면 전체를 덮지 않게 */
   max-width: 400px; 
   margin: 0 auto;
 }
@@ -469,7 +469,7 @@ function render(){
       el.addEventListener('contextmenu',(e)=>handleRightClick(e,r,c));
       el.addEventListener('touchstart', (e) => {
   handleTouchStart(e, r, c);
-}, {passive: true}); // passive: true로 바꾸면 스크롤 방해 없이 터치만 인식합니다.
+}, {passive: true}); // 스크롤 방해 없이 터치만 인식
       el.addEventListener('touchend',handleTouchEnd);
       el.addEventListener('touchmove',handleTouchEnd);
       bd.appendChild(el);
