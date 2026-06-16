@@ -88,8 +88,20 @@ body{background:transparent}
     -2px  0     0 #fff,
      2px  0     0 #fff;
 }
-#pudding-canvas{position:absolute;inset:0;pointer-events:none;z-index:40;border-radius:22px}
-#splatter-canvas{position:absolute;inset:0;pointer-events:none;z-index:35;border-radius:22px}
+#pudding-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none !important; /* 클릭 통과 강제 */
+  z-index: 40;
+  border-radius: 22px;
+}
+#splatter-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none !important; /* 클릭 통과 강제 */
+  z-index: 35;
+  border-radius: 22px;
+}
 .cell.jiggle{animation:jiggle 0.4s cubic-bezier(.36,.07,.19,.97)}
 @keyframes jiggle{0%{transform:scale(1)}15%{transform:scale(1.22,0.78)}30%{transform:scale(0.88,1.18)}45%{transform:scale(1.12,0.9)}60%{transform:scale(0.95,1.06)}75%{transform:scale(1.04,0.97)}100%{transform:scale(1)}}
 .cell.pop{animation:pop 0.22s ease forwards}
@@ -215,11 +227,20 @@ const oCanvas=document.getElementById('overlay-splatter');
 const oCtx=oCanvas.getContext('2d');
 
 function resizeCanvas(){
-  const w=document.getElementById('board-wrap');if(!w)return;
-  const W=w.offsetWidth,H=w.offsetHeight;
-  canvas.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:40;border-radius:22px';
-  canvas.width=W;canvas.height=H;
-  sCanvas.width=W;sCanvas.height=H;
+  const w = document.getElementById('board-wrap');
+  if(!w) return;
+  const W = w.offsetWidth, H = w.offsetHeight;
+  
+  // style.cssText로 한 번에 덮어쓰지 말고, 필요한 속성만 지정
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  canvas.width = W;
+  canvas.height = H;
+  
+  sCanvas.style.width = W + 'px';
+  sCanvas.style.height = H + 'px';
+  sCanvas.width = W;
+  sCanvas.height = H;
 }
 function resizeOverlayCanvas(){
   const box=document.getElementById('overlay-box');if(!box)return;
@@ -446,7 +467,10 @@ function render(){
       const el=document.createElement('div');el.className='cell hidden';el.dataset.r=r;el.dataset.c=c;
       el.addEventListener('click',()=>handleClick(r,c));
       el.addEventListener('contextmenu',(e)=>handleRightClick(e,r,c));
-      el.addEventListener('touchstart',(e)=>{e.preventDefault();handleTouchStart(e,r,c);},{passive:false});
+      el.addEventListener('touchstart', (e) => {
+  // e.preventDefault(); // 주석 처리하거나 지우세요.
+  handleTouchStart(e, r, c);
+}, {passive: true}); // passive: true로 바꾸면 스크롤 방해 없이 터치만 인식합니다.
       el.addEventListener('touchend',handleTouchEnd);
       el.addEventListener('touchmove',handleTouchEnd);
       bd.appendChild(el);
