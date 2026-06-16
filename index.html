@@ -468,7 +468,6 @@ function render(){
       el.addEventListener('click',()=>handleClick(r,c));
       el.addEventListener('contextmenu',(e)=>handleRightClick(e,r,c));
       el.addEventListener('touchstart', (e) => {
-  // e.preventDefault(); // 주석 처리하거나 지우세요.
   handleTouchStart(e, r, c);
 }, {passive: true}); // passive: true로 바꾸면 스크롤 방해 없이 터치만 인식합니다.
       el.addEventListener('touchend',handleTouchEnd);
