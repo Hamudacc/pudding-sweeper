@@ -19,13 +19,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* 전체 요소를 세로 중앙에 배치 */
+  /* justify-content: center;  <-- 이 줄을 삭제하거나 주석 처리하세요 */
   padding: 10px;
-  width: 100vw;           /* 화면 가로 전체 */
-  height: 100vh;          /* 화면 세로 전체 */
+  width: 100vw;           
+  min-height: 100vh;      /* 100vh에서 min-height: 100vh로 변경 */
   box-sizing: border-box;
+  overflow-x: hidden;     /* 가로 스크롤 방지 */
+  padding-top: 20px;      /* 상단에 약간의 여백 추가 */
 }
-
 #panel{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:430px;background:#fff8e1;border:2px solid #e6a800;border-radius:20px;padding:8px 20px;margin-bottom:10px;box-shadow:0 4px 0 #b87800,inset 0 1px 0 rgba(255,255,255,0.9)}
 
 .info-label{font-size:11px;color:#8a5e10;letter-spacing:0.04em;font-weight:600}
