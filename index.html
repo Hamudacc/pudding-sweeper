@@ -48,12 +48,12 @@
   border: 2.5px solid #d4a030;
   border-radius: 24px;
   padding: 12px;
-  display: inline-block;
   box-shadow: 0 6px 0 #b07818, inset 0 2px 6px rgba(255,255,200,0.8);
+  
+  /* 핵심: 부모(#app) 안에서 최대한 커지되, 화면보다 크면 자동으로 축소 */
   width: 90%;
   max-width: 440px;
-  /* 핵심: 게임판의 최대 높이를 제한하여 조작법이 짤리지 않게 함 */
-  max-height: 55vh; 
+  flex-shrink: 1;         /* 화면이 좁아지면 축소 허용 */
   box-sizing: border-box;
 }
 #board {
