@@ -169,9 +169,62 @@ body{background:transparent}
   gap: 16px; /* 로고/제목과 버튼 사이의 간격을 크게 띄움 */
 }
 .game-title{font-size:22px;font-weight:800;color:#6b3e08;margin-top:10px;letter-spacing:-0.02em}
-#start-btn{padding:14px 36px;font-size:16px;font-weight:700;color:#fff;background:linear-gradient(145deg,#ffb800,#f0a800);border:none;border-radius:16px;cursor:pointer;box-shadow:0 5px 0 #a06800;transition:transform 0.1s}
-#start-btn:hover{transform:scale(1.05)}
-#start-btn:active{transform:scale(0.95) translateY(3px);box-shadow:0 2px 0 #a06800}
+#start-btn {
+  position: relative;
+  padding: 14px 36px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(145deg, #ffb800, #f0a800);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #a06800, 0 6px 10px rgba(120,70,0,0.2);
+  transition: transform 0.1s, box-shadow 0.1s;
+  overflow: visible;
+  animation: jellyIdle 2.4s ease-in-out infinite;
+}
+
+/* 윤광 레이어 */
+#start-btn::before {
+  content: '';
+  position: absolute;
+  top: 3px; left: 10%; right: 10%; height: 40%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 14px 14px 50% 50% / 12px 12px 6px 6px;
+  pointer-events: none;
+}
+
+@keyframes jellyIdle {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.015, 0.985); }
+}
+
+#start-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(145deg, #ffc01a, #ffb800);
+  animation: jellyHover 0.45s cubic-bezier(.36,.07,.19,.97) forwards;
+}
+
+@keyframes jellyHover {
+  0% { transform: scale(1,1); }
+  30% { transform: scale(1.1,0.9); }
+  55% { transform: scale(0.96,1.06); }
+  75% { transform: scale(1.04,0.97); }
+  100% { transform: scale(1.05,0.96); }
+}
+
+#start-btn:active {
+  animation: jellyPress 0.4s cubic-bezier(.36,.07,.19,.97) forwards;
+  box-shadow: 0 2px 0 #a06800;
+}
+
+@keyframes jellyPress {
+  0% { transform: scale(1.05,0.96); }
+  40% { transform: scale(1.18,0.8); }
+  70% { transform: scale(0.94,1.08); }
+  100% { transform: scale(1.05,0.96); }
+}
 .guide-box{margin-top:15px;width:90%;max-width:320px;text-align:center}
 .guide-title{font-size:13px;font-weight:700;color:#8a5e10;margin-bottom:8px}
 .guide-restart{font-size:11.5px;color:#a06020;text-align:center;margin-bottom:7px;background:#fff3c0;padding:6px;border-radius:8px;font-weight:500}
